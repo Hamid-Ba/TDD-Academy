@@ -15,22 +15,34 @@ namespace Academy.Application.CourseAgg
 
         public void Create(CreateCourseVM command)
         {
-            throw new NotImplementedException();
+            if (command is null) throw new ArgumentNullException();
+
+            if (_courseRepository.GetCourseBy(command.Name) != null) throw new DuplicateNameException();
+
+            var course = new Course(command.Name, command.IsOnline, command.Tuition, command.Instructor);
+            _courseRepository.Create(course);
         }
 
         public void Edit(EditCourseVM command)
         {
-            throw new NotImplementedException();
+            if (_courseRepository.GetCourseBy(command.Id) is null) throw new ArgumentNullException();
+
+            if (_courseRepository.GetCourses().Exists(c => c.Name == command.Name && c.Id != command.Id))
+                throw new DuplicateNameException();
+
+            _courseRepository.Delete(command.Id);
+            var course = new Course(command.Name, command.IsOnline, command.Tuition, command.Instructor);
+            _courseRepository.Create(course);
         }
 
         public void Delete(long id)
         {
-            throw new NotImplementedException();
+            if (_courseRepository.GetCourseBy(id) is null) throw new ArgumentNullException();
+
+            _courseRepository.Delete(id);
         }
 
-        public List<Course> GetCourses()
-        {
-            throw new NotImplementedException();
-        }
+        public List<Course> GetCourses() => _courseRepository.GetCourses();
+
     }
 }

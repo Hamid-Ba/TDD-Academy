@@ -33,7 +33,7 @@ namespace Academy.Infrastructure.Test.Integration.Tests
         public void Should_CreateCourse_Work_Properly()
         {
             //arrange
-            var course = _builder.WriteName("Onion").WithId(0).Build();
+            var course = _builder.WriteName("Onion").Build();
 
             //act
             _repository.Create(course);
@@ -46,7 +46,7 @@ namespace Academy.Infrastructure.Test.Integration.Tests
         public void Should_CreateCourse_And_Return_ItsId_Properly()
         {
             //arrange
-            var course = _builder.WriteName("Onion").WithId(0).Build();
+            var course = _builder.WriteName("Onion").Build();
 
             //act
             var id = _repository.Create(course);
@@ -59,10 +59,10 @@ namespace Academy.Infrastructure.Test.Integration.Tests
         public void Should_ThrowDuplicatedNameException_WhenCourse_WithPassing_Name_IsExist()
         {
             //arrange
-            var course = _builder.WriteName("Git").WithId(0).Build();
+            var course = _builder.WriteName("Git").Build();
             _repository.Create(course);
 
-            var duplicatedCourse = _builder.WriteName("Git").WithId(0).Build();
+            var duplicatedCourse = _builder.WriteName("Git").Build();
 
             //act
             Action actual = () => _repository.Create(course);
@@ -76,7 +76,7 @@ namespace Academy.Infrastructure.Test.Integration.Tests
         public void Should_GetCourse_ByName_Properly(string name)
         {
             //arrange
-            var expectedCourse = _builder.WriteName("Git").WithId(0).Build();
+            var expectedCourse = _builder.WriteName("Git").Build();
             _repository.Create(expectedCourse);
 
             //act
@@ -85,5 +85,48 @@ namespace Academy.Infrastructure.Test.Integration.Tests
             //assertion
             course.Should().BeEquivalentTo(expectedCourse);
         }
+
+        [Fact]
+        public void Should_DeleteCourse_Work_Properly()
+        {
+            //arrange
+            var expectedCourse = _builder.WriteName("Test").Build();
+            _repository.Create(expectedCourse);
+
+            //act
+            _repository.Delete(expectedCourse);
+
+            //assertion
+            _repository.GetCourses().Should().NotContain(expectedCourse);
+        }
+
+        [Fact]
+        public void Should_GetCourse_ById_Work_Properly()
+        {
+            //arrange
+            var expectedCourse = _builder.WriteName("Test").Build();
+            _repository.Create(expectedCourse);
+
+            //act
+            var actual = _repository.GetCourseBy(expectedCourse.Id);
+
+            //assertion
+            actual.Should().Be(expectedCourse);
+        }
+
+        [Fact]
+        public void Should_DeleteCourse_ById_Work_Properly()
+        {
+            //arrange
+            var expectedCourse = _builder.WriteName("Test").Build();
+            _repository.Create(expectedCourse);
+
+            //act
+            _repository.Delete(expectedCourse.Id);
+
+            //assertion
+            _repository.GetCourseBy(expectedCourse.Id).Should().BeNull();
+        }
     }
+
 }

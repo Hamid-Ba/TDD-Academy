@@ -5,7 +5,6 @@ using Academy.Application.CourseAgg;
 using Academy.Domain.Entities;
 using Academy.Domain.RI;
 using Academy.Domain.Test.Unit.Builder;
-using Academy.Infrastructure.Repository;
 using FluentAssertions;
 using NSubstitute;
 using NSubstitute.ReturnsExtensions;
@@ -19,140 +18,139 @@ namespace Academy.Application.Test.Unit.Tests
         private readonly CourseApplication _courseApplication;
         private readonly ICourseRepository _courseRepository;
 
-        //public CourseApplicationTests()
-        //{
-        //    _courseBuilder = new CourseBuilder();
-        //    _courseRepository = Substitute.For<ICourseRepository, CourseRepository>();
-        //    _courseApplication = new CourseApplication(_courseRepository);
-        //}
+        public CourseApplicationTests()
+        {
+            _courseBuilder = new CourseBuilder();
+            _courseRepository = Substitute.For<ICourseRepository>();
+            _courseApplication = new CourseApplication(_courseRepository);
+        }
 
-        //[Fact]
-        //public void CreateCourse_ShouldWork_Properly()
-        //{
-        //    //arrange
-        //    var command = InitializeCreateCourseVm();
+        [Fact]
+        public void CreateCourse_ShouldWork_Properly()
+        {
+            //arrange
+            var command = InitializeCreateCourseVm();
 
-        //    //act
-        //    _courseApplication.Create(command);
+            //act
+            _courseApplication.Create(command);
 
-        //    //assertion
-        //    _courseRepository.ReceivedWithAnyArgs().Create(Arg.Any<Course>());
-        //}
+            //assertion
+            _courseRepository.ReceivedWithAnyArgs().Create(Arg.Any<Course>());
+        }
 
-        //[Fact]
-        //public void CrateCourseVM_CanNotBeNull_When_Course_Is_Being_Created()
-        //{
-        //    //arrange
-        //    CreateCourseVM command = null;
+        [Fact]
+        public void CrateCourseVM_CanNotBeNull_When_Course_Is_Being_Created()
+        {
+            //arrange
+            CreateCourseVM command = null;
 
-        //    //act
-        //    Action actual = () => _courseApplication.Create(command);
+            //act
+            Action actual = () => _courseApplication.Create(command);
 
-        //    //assertion
-        //    actual.Should().ThrowExactly<ArgumentNullException>();
-        //}
+            //assertion
+            actual.Should().ThrowExactly<ArgumentNullException>();
+        }
 
-        //[Fact]
-        //public void Should_ThrowDuplicatedException_When_Passing_Name_IsExist()
-        //{
-        //    //arrange
-        //    var command = InitializeCreateCourseVm();
+        [Fact]
+        public void Should_ThrowDuplicatedException_When_Passing_Name_IsExist()
+        {
+            //arrange
+            var command = InitializeCreateCourseVm();
 
-        //    var course = _courseBuilder.Build();
-        //    _courseRepository.GetCourseBy(Arg.Any<string>()).Returns(course);
+            var course = _courseBuilder.Build();
+            _courseRepository.GetCourseBy(Arg.Any<string>()).Returns(course);
 
-        //    //act
-        //    Action actual = () => _courseApplication.Create(command);
+            //act
+            Action actual = () => _courseApplication.Create(command);
 
-        //    //assert
-        //    actual.Should().Throw<DuplicateNameException>();
-        //}
+            //assert
+            actual.Should().Throw<DuplicateNameException>();
+        }
 
-        //[Fact]
-        //public void EditCourse_ShouldWork_Properly()
-        //{
-        //    //arrange
-        //    var command = InitializeEditCourseVm();
-        //    var course = _courseBuilder.Build();
-        //    _courseRepository.GetCourseBy(command.Id).Returns(course);
-        //    _courseRepository.GetCourses().Returns(new List<Course>());
+        [Fact]
+        public void EditCourse_ShouldWork_Properly()
+        {
+            //arrange
+            var command = InitializeEditCourseVm();
+            var course = _courseBuilder.Build();
+            _courseRepository.GetCourseBy(command.Id).Returns(course);
+            _courseRepository.GetCourses().Returns(new List<Course>());
 
-        //    //act
-        //    _courseApplication.Edit(command);
+            //act
+            _courseApplication.Edit(command);
 
-        //    //assertion
-        //    Received.InOrder(() =>
-        //    {
-        //        _courseRepository.Received().Delete(command.Id);
-        //        _courseRepository.Received().Create(Arg.Any<Course>());
-        //    });
-        //}
+            //assertion
+            Received.InOrder(() =>
+            {
+                _courseRepository.Received().Delete(command.Id);
+                _courseRepository.Received().Create(Arg.Any<Course>());
+            });
+        }
 
-        //[Fact]
-        //public void Should_ThrownNullException_WhenCourse_NotExist_While_ItIsBeingModified()
-        //{
-        //    //arrange
-        //    var command = InitializeEditCourseVm();
-        //    _courseRepository.GetCourseBy(command.Id).ReturnsNull();
-        //    _courseRepository.GetCourses().Returns(new List<Course>());
+        [Fact]
+        public void Should_ThrownNullException_WhenCourse_NotExist_While_ItIsBeingModified()
+        {
+            //arrange
+            var command = InitializeEditCourseVm();
+            _courseRepository.GetCourseBy(command.Id).ReturnsNull();
+            _courseRepository.GetCourses().Returns(new List<Course>());
 
-        //    //act
-        //    Action action = () => _courseApplication.Edit(command);
-        //    Action editAction = () => _courseApplication.Delete(command.Id);
+            //act
+            Action action = () => _courseApplication.Edit(command);
+            Action editAction = () => _courseApplication.Delete(command.Id);
 
-        //    //assert
-        //    action.Should().Throw<Exception>();
-        //    editAction.Should().Throw<ArgumentNullException>();
-        //}
+            //assert
+            action.Should().Throw<Exception>();
+            editAction.Should().Throw<ArgumentNullException>();
+        }
 
-        //[Fact]
-        //public void Should_Passing_IdAndName_Be_Unique_While_IsIsBeingEdited()
-        //{
-        //    //arrange
-        //    var command = InitializeEditCourseVm();
-        //    var course = _courseBuilder.Build();
-        //    _courseRepository.GetCourseBy(command.Id).Returns(course);
-        //    _courseRepository.GetCourses().Returns(new List<Course>() { course });
+        [Fact]
+        public void Should_Passing_IdAndName_Be_Unique_While_IsIsBeingEdited()
+        {
+            //arrange
+            var command = InitializeEditCourseVm();
+            var course = _courseBuilder.WriteName(command.Name).Build();
+            _courseRepository.GetCourseBy(command.Id).Returns(course);
+            _courseRepository.GetCourses().Returns(new List<Course>() { course });
 
-        //    //act
-        //    Action actual = () => _courseApplication.Edit(command);
+            //act
+            Action actual = () => _courseApplication.Edit(command);
 
-        //    //assertion
-        //    actual.Should().ThrowExactly<DuplicateNameException>();
-        //}
+            //assertion
+            actual.Should().ThrowExactly<DuplicateNameException>();
+        }
 
-        //[Fact]
-        //public void DeleteCourse_Should_Work_Properly()
-        //{
-        //    //arrange
-        //    var course = _courseBuilder.WithId(3).Build();
-        //    _courseRepository.GetCourseBy(Arg.Any<long>()).Returns(course);
+        [Fact]
+        public void DeleteCourse_Should_Work_Properly()
+        {
+            //arrange
+            var course = _courseBuilder.Build();
+            _courseRepository.GetCourseBy(Arg.Any<long>()).Returns(course);
 
-        //    //act
-        //    _courseApplication.Delete(course.Id);
+            //act
+            _courseApplication.Delete(course.Id);
 
-        //    //assertion
-        //    _courseRepository.Received().Delete(Arg.Any<long>());
-        //}
+            //assertion
+            _courseRepository.Received().Delete(Arg.Any<long>());
+        }
 
-        //[Fact]
-        //public void Getting_List_Of_Courses_Should_Properly_Work()
-        //{
-        //    //arrange
-        //    _courseRepository.GetCourses().Returns(new List<Course>());
+        [Fact]
+        public void Getting_List_Of_Courses_Should_Properly_Work()
+        {
+            //arrange
+            _courseRepository.GetCourses().Returns(new List<Course>());
 
-        //    //act
-        //    _courseApplication.GetCourses();
+            //act
+            _courseApplication.GetCourses();
 
-        //    //assertion
-        //    _courseRepository.Received().GetCourses();
-        //}
+            //assertion
+            _courseRepository.Received().GetCourses();
+        }
 
         private static CreateCourseVM InitializeCreateCourseVm() =>
             new()
             {
-                Id = 1,
-                Name = "Asp.Net Core 5",
+                Name = "test",
                 Instructor = "Hamid",
                 IsOnline = true,
                 Tuition = 450000

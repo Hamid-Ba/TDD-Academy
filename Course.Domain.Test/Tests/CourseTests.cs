@@ -15,15 +15,14 @@ namespace Academy.Domain.Test.Unit.Tests
         [Fact]
         public void Constructor_ShouldInitializeModelProperly()
         {
-            const long _id = 1;
             const string _name = "Asp.Net Core 5";
             const bool _isOnline = true;
             const double _tuition = 750000;
             const string _instructor = "Hamid";
 
-            var course = new Academy.Domain.Entities.Course(_id, _name, _isOnline, _tuition, _instructor);
+            var course = new Academy.Domain.Entities.Course(_name, _isOnline, _tuition, _instructor);
 
-            course.Id.Should().Be(_id);
+            course.Name.Should().Be(_name);
         }
 
         [Fact]
@@ -48,20 +47,20 @@ namespace Academy.Domain.Test.Unit.Tests
             course.Sections.Should().BeEquivalentTo(section);
         }
 
-        [Theory]
-        [InlineData(1)]
-        public void Courses_ShouldBeEqual_ByEqualId(long sameId)
-        {
-            //Arrange
-            var course1 = _courseBuilder.WithId(sameId).Build();
-            var course2 = _courseBuilder.WithId(sameId).Build();
+        //[Theory]
+        //[InlineData(1)]
+        //public void Courses_ShouldBeEqual_ByEqualId(long sameId)
+        //{
+        //    //Arrange
+        //    var course1 = _courseBuilder.Build();
+        //    var course2 = _courseBuilder.Build();
 
-            //Act
-            var actual = course1.Equals(course2);
+        //    //Act
+        //    var actual = course1.Equals(course2);
 
-            //Assert
-            actual.Should().BeTrue();
-        }
+        //    //Assert
+        //    actual.Should().BeTrue();
+        //}
 
         public void Dispose()
         {

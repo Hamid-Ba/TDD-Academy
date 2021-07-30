@@ -25,19 +25,18 @@ namespace Academy.Infrastructure.Repository
 
         public List<Course> GetCourses() => _context.Courses.ToList();
 
-        public Course GetCourseBy(long id)
+        public Course GetCourseBy(long id) => _context.Courses.Find(id);
+
+        public void Delete(Course expected)
         {
-            throw new System.NotImplementedException();
+            _context.Courses.Remove(expected);
+            _context.SaveChanges();
         }
 
-        public bool Delete(Course expected)
+        public void Delete(long id)
         {
-            throw new System.NotImplementedException();
-        }
-
-        public bool Delete(long id)
-        {
-            throw new System.NotImplementedException();
+            var course = GetCourseBy(id);
+            Delete(course);
         }
 
         public Course GetCourseBy(string name) => _context.Courses.FirstOrDefault(c => c.Name == name);

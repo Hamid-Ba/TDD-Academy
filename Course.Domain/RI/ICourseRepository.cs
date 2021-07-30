@@ -8,8 +8,8 @@ namespace Academy.Domain.RI
         long Create(Course courseToAdd);
         List<Course> GetCourses();
         Course GetCourseBy(long id);
-        bool Delete(Course expected);
-        bool Delete(long id);
+        void Delete(Course expected);
+        void Delete(long id);
         Course GetCourseBy(string name);
         Course GetCourseBy(long id,string name);
     }

@@ -21,9 +21,9 @@ namespace Academy.Infrastructure.Test.Integration.SetupFixtures
 
             _scope = new TransactionScope();
 
-            var asp = new Course(0, "Asp", true, 700, "Hamid");
-            var tdd = new Course(0, "Tdd And Bdd", true, 300, "Hamid");
-            var webDesign = new Course(0, "Web Design", true, 400, "Khosro");
+            var asp = new Course("Asp", true, 700, "Hamid");
+            var tdd = new Course("Tdd And Bdd", true, 300, "Hamid");
+            var webDesign = new Course("Web Design", true, 400, "Khosro");
 
             Context.Add(asp);
             Context.Add(tdd);
