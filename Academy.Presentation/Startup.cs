@@ -11,6 +11,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Academy.Application.CourseAgg;
+using Academy.Domain.RI;
+using Academy.Infrastructure.Context;
+using Academy.Infrastructure.Repository;
+using Microsoft.EntityFrameworkCore;
 
 namespace Academy.Presentation
 {
@@ -26,6 +31,17 @@ namespace Academy.Presentation
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddTransient<ICourseApplication, CourseApplication>();
+            services.AddTransient<ICourseRepository, CourseRepository>();
+
+            #region ConfigDataBase
+
+            services.AddDbContext<AcademyContext>(options =>
+            {
+                options.UseSqlServer(Configuration.GetConnectionString("AcademyConnection"));
+            });
+
+            #endregion
 
             services.AddControllers();
             services.AddSwaggerGen(c =>

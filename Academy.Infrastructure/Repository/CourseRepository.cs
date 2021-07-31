@@ -12,13 +12,13 @@ namespace Academy.Infrastructure.Repository
         private readonly AcademyContext _context;
 
         public CourseRepository(AcademyContext context) => _context = context;
-         
+
         public long Create(Course courseToAdd)
         {
             if (_context.Courses.Any(c => c.Name == courseToAdd.Name))
                 throw new DuplicateNameException();
 
-            _context.Add(courseToAdd);
+            _context.Courses.Add(courseToAdd);
             _context.SaveChanges();
             return courseToAdd.Id;
         }
@@ -27,16 +27,18 @@ namespace Academy.Infrastructure.Repository
 
         public Course GetCourseBy(long id) => _context.Courses.Find(id);
 
-        public void Delete(Course expected)
+        public bool Delete(Course expected)
         {
             _context.Courses.Remove(expected);
             _context.SaveChanges();
+
+            return true;
         }
 
-        public void Delete(long id)
+        public bool Delete(long id)
         {
             var course = GetCourseBy(id);
-            Delete(course);
+            return Delete(course);
         }
 
         public Course GetCourseBy(string name) => _context.Courses.FirstOrDefault(c => c.Name == name);

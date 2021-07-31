@@ -17,21 +17,12 @@ namespace Academy.Presentation.Controllers
         public List<Course> GetCourses() => _courseApplication.GetCourses();
 
         [HttpPost]
-        public void Create(CreateCourseVM course)
-        {
-            _courseApplication.Create(course);
-        }
+        public long Create(CreateCourseVM course) => _courseApplication.Create(course);
 
         [HttpPut]
-        public void Edit(EditCourseVM course)
-        {
-            _courseApplication.Edit(course);
-        }
+        public long Edit(EditCourseVM course) => _courseApplication.Edit(course);
 
-        [HttpDelete]
-        public void Delete(long courseId)
-        {
-            _courseApplication.Delete(courseId);
-        }
+        [HttpDelete("{courseId}")]
+        public bool Delete(long courseId) => _courseApplication.Delete(courseId);
     }
 }

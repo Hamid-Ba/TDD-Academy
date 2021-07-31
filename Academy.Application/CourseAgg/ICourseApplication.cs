@@ -7,7 +7,7 @@ namespace Academy.Application.CourseAgg
     {
         long Create(CreateCourseVM command);
         long Edit(EditCourseVM command);
-        void Delete(long id);
+        bool Delete(long id);
         List<Course> GetCourses();
     }
 }

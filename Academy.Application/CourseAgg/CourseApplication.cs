@@ -39,11 +39,11 @@ namespace Academy.Application.CourseAgg
             return course.Id;
         }
 
-        public void Delete(long id)
+        public bool Delete(long id)
         {
             if (_courseRepository.GetCourseBy(id) is null) throw new ArgumentNullException();
 
-            _courseRepository.Delete(id);
+            return _courseRepository.Delete(id);
         }
 
         public List<Course> GetCourses() => _courseRepository.GetCourses();
