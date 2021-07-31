@@ -13,7 +13,7 @@ namespace Academy.Application.CourseAgg
         public CourseApplication(ICourseRepository courseRepository) => _courseRepository = courseRepository;
 
 
-        public void Create(CreateCourseVM command)
+        public long Create(CreateCourseVM command)
         {
             if (command is null) throw new ArgumentNullException();
 
@@ -21,9 +21,11 @@ namespace Academy.Application.CourseAgg
 
             var course = new Course(command.Name, command.IsOnline, command.Tuition, command.Instructor);
             _courseRepository.Create(course);
+
+            return course.Id;
         }
 
-        public void Edit(EditCourseVM command)
+        public long Edit(EditCourseVM command)
         {
             if (_courseRepository.GetCourseBy(command.Id) is null) throw new ArgumentNullException();
 
@@ -33,6 +35,8 @@ namespace Academy.Application.CourseAgg
             _courseRepository.Delete(command.Id);
             var course = new Course(command.Name, command.IsOnline, command.Tuition, command.Instructor);
             _courseRepository.Create(course);
+
+            return course.Id;
         }
 
         public void Delete(long id)
