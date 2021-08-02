@@ -1,0 +1,15 @@
+﻿Title: Define A New Course
+
+As a Acamdemy Manager
+I Want To Define A Course
+So That I Can Do It In Admin Panel
+
+Scaenario 1 : Define A Course 
+ Given I Want To Create A Course
+ When I Press The Button To Add
+ Then The Course Should be Available On List 
+
+ Scenario 2 : Avoid To Define A Existed Course
+  Given I Want To Create A Course That Has Been Already Created
+  When I Press The Button To Add
+  Then The Course Should Not Add To List

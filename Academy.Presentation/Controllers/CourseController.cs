@@ -17,7 +17,11 @@ namespace Academy.Presentation.Controllers
         public List<Course> GetCourses() => _courseApplication.GetCourses();
 
         [HttpPost]
-        public long Create(CreateCourseVM course) => _courseApplication.Create(course);
+        public long Create(CreateCourseVM course)
+        {
+            try { return _courseApplication.Create(course); }
+            catch { return 0; }
+        }
 
         [HttpPut]
         public long Edit(EditCourseVM course) => _courseApplication.Edit(course);

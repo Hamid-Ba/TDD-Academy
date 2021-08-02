@@ -33,7 +33,7 @@ namespace Academy.Infrastructure.Test.Integration.Tests
         public void Should_CreateCourse_Work_Properly()
         {
             //arrange
-            var course = _builder.WriteName("Onion").Build();
+            var course = _builder.WriteName("Onion1").Build();
 
             //act
             _repository.Create(course);
@@ -46,7 +46,7 @@ namespace Academy.Infrastructure.Test.Integration.Tests
         public void Should_CreateCourse_And_Return_ItsId_Properly()
         {
             //arrange
-            var course = _builder.WriteName("Onion").Build();
+            var course = _builder.WriteName("Onion2").Build();
 
             //act
             var id = _repository.Create(course);
@@ -59,10 +59,10 @@ namespace Academy.Infrastructure.Test.Integration.Tests
         public void Should_ThrowDuplicatedNameException_WhenCourse_WithPassing_Name_IsExist()
         {
             //arrange
-            var course = _builder.WriteName("Git").Build();
+            var course = _builder.WriteName("Git1").Build();
             _repository.Create(course);
 
-            var duplicatedCourse = _builder.WriteName("Git").Build();
+            var duplicatedCourse = _builder.WriteName("Git1").Build();
 
             //act
             Action actual = () => _repository.Create(course);
@@ -76,7 +76,7 @@ namespace Academy.Infrastructure.Test.Integration.Tests
         public void Should_GetCourse_ByName_Properly(string name)
         {
             //arrange
-            var expectedCourse = _builder.WriteName("Git").Build();
+            var expectedCourse = _builder.WriteName(name).Build();
             _repository.Create(expectedCourse);
 
             //act
@@ -90,7 +90,7 @@ namespace Academy.Infrastructure.Test.Integration.Tests
         public void Should_DeleteCourse_Work_Properly()
         {
             //arrange
-            var expectedCourse = _builder.WriteName("Test").Build();
+            var expectedCourse = _builder.WriteName("Test1").Build();
             _repository.Create(expectedCourse);
 
             //act
@@ -104,7 +104,7 @@ namespace Academy.Infrastructure.Test.Integration.Tests
         public void Should_GetCourse_ById_Work_Properly()
         {
             //arrange
-            var expectedCourse = _builder.WriteName("Test").Build();
+            var expectedCourse = _builder.WriteName("Test2").Build();
             _repository.Create(expectedCourse);
 
             //act
@@ -118,7 +118,7 @@ namespace Academy.Infrastructure.Test.Integration.Tests
         public void Should_DeleteCourse_ById_Work_Properly()
         {
             //arrange
-            var expectedCourse = _builder.WriteName("Test").Build();
+            var expectedCourse = _builder.WriteName("Test3").Build();
             _repository.Create(expectedCourse);
 
             //act
